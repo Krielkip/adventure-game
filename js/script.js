@@ -1,70 +1,106 @@
-function Uitleg() {
-  swal("Uitleg",
-       "Bij deze politie test kan je testen of je een geboren politie agent bent. In het spel kan je keuzes maken, elke keuze zal de uitkomst van het spel beinvloeden, kies dus verstandig.",
-       "info");
-}
+var game = function () {
+  var levels = [],
+    currentLevel,
+    container,
+    question,
+    button1,
+    button2,
+    gameStarted = false;
 
-function StartGame() {
+  var buildLevels = function () {
+      levels.push(new LevelController(
+        'startScherm',
+        'Er is een ongeval gebeurd op de A15, hoe ga je hierheen?',
+        'Fiets',
+        'Auto',
+        'startSchermDood',
+        'busLaan'
+      ));
 
-  var startScherm = new LevelController(
-    /*Question*/  'Er is een ongeval gebeurd op de A15, hoe ga je hierheen?',
-    /*Button1*/   'Fiets',
-    /*Button2*/   'Auto',
-    /*Redirect1*/ startSchermDood,
-    /*Redirect2*/ buslaan);
+      levels.push(new LevelController(
+        'busLaan',
+        'Via de buslaan ben je 3 minuten sneller bij het ongeval, ga je over de buslaan?',
+        'Ja',
+        'Nee',
+        'ongeval',
+        'buslaanDood'
+      ));
 
-    startscherm.setQuestion("sddassads");
-    console.log(startscherm.getQuestion());
+      levels.push(new LevelController(
+        'startSchermDood',
+        'Je bent veel te laat aangekomen en je hebt het risico genomen om aangereden te worden op de snelweg.',
+        'Opnieuw',
+        'Opnieuw',
+        'startScherm',
+        'startScherm'
+      ));
 
-  //Startscherm dood
-  var startSchermDood = new LevelController(
-    /*Question*/  'Je bent veel te laat aangekomen en je hebt het risico genomen om aangereden te worden op de snelweg.',
-    /*Button1*/   'Opnieuw',
-    /*Button2*/   'Opnieuw',
-    /*Redirect1*/ startScherm,
-    /*Redirect2*/ startScherm);
+      levels.push(new LevelController(
+        'buslaanDood',
+        'Je bent te laat aangekomen omdat je niet via de buslaan ging, het ongeval is nog veel groter geworden.',
+        'Opnieuw',
+        'Opnieuw',
+        'startScherm',
+        'startScherm'
+      ));
+    },
+    buildInteraction = function () {
+      container = document.querySelector('#content');
+        question = container.querySelector('#question');
+        button1 = container.querySelector('button#first');
+        button2 = container.querySelector('button#second');
 
-  //Buslaan
-  var buslaan = new LevelController(
-    /*Question*/  'Via de buslaan ben je 3 minuten sneller bij het ongeval, ga je over de buslaan?',
-    /*Button1*/   'Ja',
-    /*Button2*/   'Nee',
-    /*Redirect1*/ ongeval,
-    /*Redirect2*/ buslaanDood);
-
-  //Buslaan dood
-  var buslaanDood = new LevelController(
-    /*Question*/  'Je bent te laat aangekomen omdat je niet via de buslaan ging, het ongeval is nog veel groter geworden.',
-    /*Button1*/   'Opnieuw',
-    /*Button2*/   'Opnieuw',
-    /*Redirect1*/ startScherm,
-    /*Redirect2*/ startScherm);
-
-  var ongeval = new LevelController(
-    /*Question*/  'Je komt aan bij het ongeval en er is druk verkeer, wat doe je eerst?',
-    /*Button1*/   'Weg afzetten',
-    /*Button2*/   'Gewonden helpen',
-    /*Redirect1*/ '',
-    /*Redirect2*/ ongevalDood);
-
-  //Ongeval dood
-  var ongevalDood = new LevelController(
-    /*Question*/  'Je wordt overreden voor een vrachtwagen die je niet heeft gezien.',
-    /*Button1*/   'Opnieuw',
-    /*Button2*/   'Opnieuw',
-    /*Redirect1*/ startScherm,
-    /*Redirect2*/ startScherm);
-
-    var gameContainer = document.querySelector('#content'),
-    currentLevel = startScherm, // of startScherm
-    button1 = gameContainer.querySelector('button#first'),
-    button2 = gameContainer.querySelector('button#second');
-
-    button1.addEventListener('click', function(e) {
+      button1.addEventListener('click', clickButton1);
+      button2.addEventListener('click', clickButton2);
+    },
+    clickButton1 = function (e) {
       e.preventDefault();
-      console.info(currentLevel.getRedirect1());
-      setNewLevel(currentLevel.getRedirect1());
-    });
-}
+      if (gameStarted) {
+        setLevel(currentLevel.getRedirect1);
+      }
+      else {
+        startGame();
+      }
+    },
+    clickButton2 = function (e) {
+      e.preventDefault();
+      if (gameStarted) {
+        setLevel(currentLevel.getRedirect2());
+      }
+      else {
+        displayUitleg();
+      }
+    },
+    setLevel = function (level) {
+      var Length = levels.length;
+      while (Length--) {
+        if (levels[Length].getId() === level) {
+          currentLevel = levels[Length];
+          setupStage(currentLevel);
+          break;
+        }
+      }
+    },
+    startGame = function(){
+      setLevel('startScherm');
+      gameStarted = true;
+    },
+    setupStage = function(level) {
+      question.innerHTML = level.getQuestion();
+      button1.innerHTML = level.getButton1();
+      button2.innerHTML = level.getButton2();
+    },
+    displayUitleg = function () {
+      swal("Uitleg",
+        "Bij deze politie test kan je testen of je een geboren politie agent bent. In het spel kan je keuzes maken, elke keuze zal de uitkomst van het spel beinvloeden, kies dus verstandig.",
+        "info");
+    };
 
-// document.getElementById('third').setAttribute( "onClick", "();" );
+
+  buildLevels();
+  buildInteraction();
+};
+
+window.addEventListener("DOMContentLoaded", function() {
+  game();
+}, false);
