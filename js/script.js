@@ -56,7 +56,7 @@ var game = function () {
     clickButton1 = function (e) {
       e.preventDefault();
       if (gameStarted) {
-        setLevel(currentLevel.getRedirect1);
+        setLevel(currentLevel.getRedirect1());
       }
       else {
         startGame();
