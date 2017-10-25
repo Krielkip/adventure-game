@@ -1,14 +1,54 @@
 body {
-	background-color: silver;
-	font-family: sans-serif;
+  background: url('../img/Hoofdmenu.jpg') no-repeat center center fixed;
+  background-size: cover;
+  font-family: 'Raleway', sans-serif;
 }
 
-#level_title {
-	font-size: 18px;
-	color: black;		
-	font-weight: bold;
+h1 {
+  font-weight: 800;
+  color: #ecf0f1;
+  font-size: 3em;
+  text-transform: uppercase;
+  text-align: center;
 }
 
-#level_image {
-	height: 500px;
+#content {
+  text-align: center;
+}
+
+.centerButtons {
+  text-align: center;
+}
+
+p {
+  color: black;
+  background: rgba(255, 255, 255, 0.75);
+  width: 50%;
+  font-size: 1.5em;
+  margin: 20px auto;
+  padding: 10px;
+  border-radius: 5px;
+}
+
+button {
+  margin: 0 20px;
+  padding: 30px 80px;
+  border-radius: 20px;
+  border: none;
+  cursor: pointer;
+  background-color: #ecf0f1;
+  box-shadow: 0 6px #bdc3c7;
+  position: relative;
+  font-family: 'Raleway', sans-serif;
+  font-size: 1.2em;
+}
+
+button:hover {
+  box-shadow: 0 4px #bdc3c7;
+  top: 2px;
+}
+
+button:active {
+  box-shadow: 0 2px #bdc3c7;
+  top: 4px;
 }
